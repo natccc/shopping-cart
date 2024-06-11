@@ -66,7 +66,7 @@ describe("calculateSubTotal", () => {
     expect(cart.calculateSubTotal()).toBe(445);
   });
 
-  test("ignore invalid items ", () => {
+  test("return total while ignoring items with invalid code", () => {
     const cart = new Cart();
     const data = [
       {

@@ -1,14 +1,13 @@
 class Cart {
   constructor() {
-    this.items = [];
-    this.itemsTotal = {};
-    this.price = {
+    this.items = {};
+    this.prices = {
       A: 50,
       B: 35,
       C: 25,
       D: 12,
     };
-    this.bulkPrice = {
+    this.bulkPrices = {
       A: {
         quantity: 3,
         price: 140,
@@ -19,27 +18,25 @@ class Cart {
       },
     };
   }
-  addItem(code, quantity) {
-    this.items.push({ code, quantity });
+    addItem(code, quantity) {
+      if(this.items[code]) {
+        this.items[code]+= quantity
+      }
+      else {
+          this.items[code] = quantity
+      }
   }
   calculateSubTotal() {
     let total = 0;
-      this.items.forEach((item) => {
-          if (this.itemsTotal[item.code]) {
-            this.itemsTotal[item.code] += item.quantity;
+      for (const code in this.items) {
+          if (!this.prices[code]) continue
+          const count = this.items[code]
+          if (this.bulkPrices[code]) {
+              const bulk = this.bulkPrices[code]
+              total += Math.floor(count / bulk.quantity) * bulk.price;
+              total += count % bulk.quantity * this.prices[code];
           } else {
-            this.itemsTotal[item.code] = item.quantity;
-        }
-      });
-      for (const code in this.itemsTotal) {
-          if(!this.price[code]) continue
-          if (this.bulkPrice[code]) {
-              total += Math.floor(this.itemsTotal[code] / this.bulkPrice[code].quantity) * this.bulkPrice[code].price;
-              total += this.itemsTotal[code] % this.bulkPrice[code].quantity * this.price[code];
-              console.log("bulk")
-          } else {
-              total += this.itemsTotal[code] * this.price[code];
-              console.log("no bulk")
+              total += count * this.prices[code];
           }
       }
     return total;
