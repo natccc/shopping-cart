@@ -18,28 +18,29 @@ class Cart {
       },
     };
   }
-    addItem(code, quantity) {
-      if(this.items[code]) {
-        this.items[code]+= quantity
+  addItem(code, quantity) {
+      if (quantity <= 0) return;
+      if (this.items[code]) {
+        this.items[code] += quantity;
+      } else {
+        this.items[code] = quantity;
       }
-      else {
-          this.items[code] = quantity
-      }
-  }
+    }
+  
   calculateSubtotal() {
     let subtotal = 0;
-      for (const code in this.items) {
-          if (!this.prices[code]) continue
-          const count = this.items[code]
-          if (this.bulkPrices[code]) {
-              const bulk = this.bulkPrices[code]
-              subtotal += Math.floor(count / bulk.quantity) * bulk.price;
-              subtotal += count % bulk.quantity * this.prices[code];
-          } else {
-              subtotal += count * this.prices[code];
-          }
+    for (const code in this.items) {
+      if (!this.prices[code]) continue;
+      const count = this.items[code];
+      if (this.bulkPrices[code]) {
+        const bulk = this.bulkPrices[code];
+        subtotal += Math.floor(count / bulk.quantity) * bulk.price;
+        subtotal += (count % bulk.quantity) * this.prices[code];
+      } else {
+        subtotal += count * this.prices[code];
       }
+    }
     return subtotal;
   }
 }
-module.exports = Cart
+module.exports = Cart;

@@ -5,7 +5,7 @@ describe("Cart", () => {
   let cart;
   beforeEach(() => {
     cart = new Cart();
-  })
+  });
   test("return 0 when cart is empty", () => {
     const cart = new Cart();
     expect(cart.calculateSubtotal()).toBe(0);
@@ -78,26 +78,47 @@ describe("Cart", () => {
     data.forEach((item) => cart.addItem(item.code, item.quantity));
     expect(cart.calculateSubtotal()).toBe(0);
   });
-    
-    test('allows multiple entries of the same item', () => {
-        const data = [
-          {
-            code: "A",
-            quantity: 2,
-          },
-          {
-            code: "A",
-            quantity: 2,
-          },
-        ];
-        data.forEach((item) => cart.addItem(item.code, item.quantity));
-        expect(cart.calculateSubtotal()).toBe(190);
-      
-    })
-  test('calculates total for dataset 1 from URL', async () => {
-    const url = "https://spareroom.github.io/recruitment/docs/cart-kata/data-set-1.json";
+
+  test("allows multiple entries of the same item and handles boundary conditions for bulk prices", () => {
+    const data = [
+      {
+        code: "A",
+        quantity: 2,
+      },
+      {
+        code: "A",
+        quantity: 1,
+      },
+    ];
+    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    expect(cart.calculateSubtotal()).toBe(140);
+  });
+
+  test("handles zero quantities", () => {
+    const data = [
+      {
+        code: "A",
+        quantity: 0,
+      },
+    ];
+    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    expect(cart.calculateSubtotal()).toBe(0);
+  });
+  test("handles negative quantities", () => {
+    const data = [
+      {
+        code: "A",
+        quantity: -1,
+      },
+    ];
+    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    expect(cart.calculateSubtotal()).toBe(0);
+  });
+  test("calculates total for dataset 1 from URL", async () => {
+    const url =
+      "https://spareroom.github.io/recruitment/docs/cart-kata/data-set-1.json";
     const response = await axios.get(url);
     response.data.forEach((item) => cart.addItem(item.code, item.quantity));
     expect(cart.calculateSubtotal()).toBe(284);
-    })
+  });
 });
