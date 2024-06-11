@@ -1,5 +1,6 @@
 const axios = require("axios");
 const Cart = require("../cart");
+
 describe("calculateSubTotal", () => {
   test("return 0 when cart is empty", () => {
     const cart = new Cart();
@@ -94,5 +95,11 @@ describe("calculateSubTotal", () => {
         expect(cart.calculateSubTotal()).toBe(190);
       
     })
-    
+  test('calculates total for dataset 1', async () => {
+    const cart = new Cart();
+    const url = "https://spareroom.github.io/recruitment/docs/cart-kata/data-set-1.json";
+    const response = await axios.get(url);
+    response.data.forEach((item) => cart.addItem(item.code, item.quantity));
+    expect(cart.calculateSubTotal()).toBe(284);
+    })
 });
