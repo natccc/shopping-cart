@@ -26,20 +26,20 @@ class Cart {
           this.items[code] = quantity
       }
   }
-  calculateSubTotal() {
-    let total = 0;
+  calculateSubtotal() {
+    let subtotal = 0;
       for (const code in this.items) {
           if (!this.prices[code]) continue
           const count = this.items[code]
           if (this.bulkPrices[code]) {
               const bulk = this.bulkPrices[code]
-              total += Math.floor(count / bulk.quantity) * bulk.price;
-              total += count % bulk.quantity * this.prices[code];
+              subtotal += Math.floor(count / bulk.quantity) * bulk.price;
+              subtotal += count % bulk.quantity * this.prices[code];
           } else {
-              total += count * this.prices[code];
+              subtotal += count * this.prices[code];
           }
       }
-    return total;
+    return subtotal;
   }
 }
 module.exports = Cart
