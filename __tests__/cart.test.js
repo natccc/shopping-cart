@@ -7,7 +7,6 @@ describe("Cart", () => {
     cart = new Cart();
   });
   test("return 0 when cart is empty", () => {
-    const cart = new Cart();
     expect(cart.calculateSubtotal()).toBe(0);
   });
 

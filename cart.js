@@ -19,18 +19,19 @@ class Cart {
     };
   }
   addItem(code, quantity) {
-      if (quantity <= 0) return;
+    if (quantity <= 0) return;
+    if (this.prices[code]) {
       if (this.items[code]) {
         this.items[code] += quantity;
       } else {
         this.items[code] = quantity;
       }
     }
-  
+  }
+
   calculateSubtotal() {
     let subtotal = 0;
     for (const code in this.items) {
-      if (!this.prices[code]) continue;
       const count = this.items[code];
       if (this.bulkPrices[code]) {
         const bulk = this.bulkPrices[code];
