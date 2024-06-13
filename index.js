@@ -1,19 +1,30 @@
 const Cart = require("./cart");
 const axios = require("axios");
 
-const fetchDataAndGetSubtotal = async (url) => {
+const fetchOrderData = async (orderURL) => {
   try {
-    const response = await axios.get(url);
-    const data = response.data;
-    const cart = new Cart();
-    data.forEach((item) => cart.addItem(item.code, item.quantity));
-    console.log(`Total: ${cart.calculateSubtotal()}`);
+    const response = await axios.get(orderURL);
+    return response.data;
   } catch (error) {
     console.error(`Error fetching data: ${error.message}`);
+    throw error;
   }
 };
-fetchDataAndGetSubtotal(
+
+const getSubtotal = async (orderURL) => {
+  const cart = new Cart();
+  try {
+    const orderData = await fetchOrderData(orderURL);
+    cart.setItems(orderData);
+    console.log(`Total: ${cart.calculateSubtotal()}`);
+    return cart;
+  } catch (error) {
+    console.error(`Error initializing cart: ${error.message}`);
+  }
+};
+
+getSubtotal(
   "https://spareroom.github.io/recruitment/docs/cart-kata/data-set-1.json"
 );
 
-module.exports= fetchDataAndGetSubtotal
+module.exports = getSubtotal;

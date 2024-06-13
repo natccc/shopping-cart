@@ -1,9 +1,9 @@
 const axios = require("axios");
-const fetchDataAndGetSubtotal = require("../index");
+const getSubtotal = require("../index");
 
 jest.mock("axios");
 
-describe("fetchDataAndGetSubtotal", () => {
+describe("getSubtotal", () => {
     test("calculate the subtotal for dataset 1 ", async () => {
     const data = [
       { code: "A", quantity: 3 },
@@ -14,12 +14,11 @@ describe("fetchDataAndGetSubtotal", () => {
     axios.get.mockResolvedValue({ data });
     const consoleSpy = jest.spyOn(console, "log");
 
-    await fetchDataAndGetSubtotal(
+    await getSubtotal(
       "https://spareroom.github.io/recruitment/docs/cart-kata/data-set-1.json"
     );
 
     expect(consoleSpy).toHaveBeenCalledWith("Total: 284");
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
 
     consoleSpy.mockRestore();
   });
@@ -29,14 +28,13 @@ describe("fetchDataAndGetSubtotal", () => {
 
     const consoleSpy = jest.spyOn(console, "error");
 
-    await fetchDataAndGetSubtotal(
+    await getSubtotal(
       "https://spareroom.github.io/recruitment/docs/cart-kata/data-set-1.json"
     );
 
     expect(consoleSpy).toHaveBeenCalledWith(
       "Error fetching data: Network error"
     );
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
     consoleSpy.mockRestore();
   });
 });

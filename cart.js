@@ -22,6 +22,10 @@ class Cart {
       },
     };
   }
+
+  setItems(items) {
+    items.forEach(({code, quantity})=>this.addItem(code,quantity))
+  }
   addItem(code, quantity) {
     if (quantity <= 0) return;
     if (this.#prices[code]) {

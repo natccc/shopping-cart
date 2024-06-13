@@ -6,6 +6,7 @@ describe("Cart", () => {
   beforeEach(() => {
     cart = new Cart();
   });
+  
   test("return 0 when cart is empty", () => {
     expect(cart.calculateSubtotal()).toBe(0);
   });
@@ -29,7 +30,7 @@ describe("Cart", () => {
         quantity: 1,
       },
     ];
-    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    cart.setItems(data)
     expect(cart.calculateSubtotal()).toBe(122);
   });
 
@@ -44,7 +45,7 @@ describe("Cart", () => {
         quantity: 2,
       },
     ];
-    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    cart.setItems(data);
     expect(cart.calculateSubtotal()).toBe(200);
   });
 
@@ -63,7 +64,7 @@ describe("Cart", () => {
         quantity: 1,
       },
     ];
-    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    cart.setItems(data);
     expect(cart.calculateSubtotal()).toBe(445);
   });
 
@@ -74,7 +75,7 @@ describe("Cart", () => {
         quantity: 2,
       },
     ];
-    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    cart.setItems(data);
     expect(cart.calculateSubtotal()).toBe(0);
   });
 
@@ -89,7 +90,7 @@ describe("Cart", () => {
         quantity: 1,
       },
     ];
-    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    cart.setItems(data);
     expect(cart.calculateSubtotal()).toBe(140);
   });
 
@@ -100,9 +101,10 @@ describe("Cart", () => {
         quantity: 0,
       },
     ];
-    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    cart.setItems(data);
     expect(cart.calculateSubtotal()).toBe(0);
   });
+
   test("handles negative quantities", () => {
     const data = [
       {
@@ -110,14 +112,15 @@ describe("Cart", () => {
         quantity: -1,
       },
     ];
-    data.forEach((item) => cart.addItem(item.code, item.quantity));
+    cart.setItems(data);
     expect(cart.calculateSubtotal()).toBe(0);
   });
+
   test("calculates total for dataset 1 from URL", async () => {
-    const url =
+    const dataUrl =
       "https://spareroom.github.io/recruitment/docs/cart-kata/data-set-1.json";
-    const response = await axios.get(url);
-    response.data.forEach((item) => cart.addItem(item.code, item.quantity));
+    const response = await axios.get(dataUrl);
+    cart.setItems(response.data);
     expect(cart.calculateSubtotal()).toBe(284);
   });
 });
