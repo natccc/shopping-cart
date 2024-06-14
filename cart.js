@@ -35,6 +35,9 @@ class Cart {
         this.#items[code] = quantity;
       }
     }
+    else {
+      console.warn(`Item code ${code} not found in prices`)
+    }
   }
 
   calculateSubtotal() {
